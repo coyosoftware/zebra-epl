@@ -53,26 +53,26 @@ module Zebra
       def dump_contents(io = STDOUT)
         check_required_configurations
         # Start options
-        io << "#{print_method}\n"
+        io << "#{print_method}\r\n"
         # Q<label height in dots>,<space between labels in dots>
-        io << "Q#{length},#{gap}\n" if length && gap
+        io << "Q#{length},#{gap}\r\n" if length && gap
         # q<label width in dots>
-        io << "q#{width}\n" if width
+        io << "q#{width}\r\n" if width
         # Print Speed (S command)
-        io << "S#{print_speed}\n"
+        io << "S#{print_speed}\r\n"
         # Density (D command)
-        io << "D#{print_density}\n" if print_density
+        io << "D#{print_density}\r\n" if print_density
         # ZT = Printing from top of image buffer.
 
-        io << "\n"
+        io << "\r\n"
         # Start new label
-        io << "N\n"
+        io << "N\r\n"
 
         elements.each do |element|
-          io << element.to_epl << "\n"
+          io << element.to_epl << "\r\n"
         end
 
-        io << "P#{copies}\n"
+        io << "P#{copies}\r\n\r\n"
       end
 
       def persist

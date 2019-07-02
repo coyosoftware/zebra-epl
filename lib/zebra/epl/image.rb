@@ -30,8 +30,8 @@ module Zebra
         Array.new(image.columns * image.rows).tap do |dots|
           index = 0
 
-          (0..image.rows).each do |y|
-            (0..image.columns).each do |x|
+          (0...image.rows).each do |y|
+            (0...image.columns).each do |x|
               pixel = image.pixel_color(x, y)
 
               luma = (((pixel.red / 256) * 0.3) + ((pixel.green / 256) * 0.59) + ((pixel.blue / 256) * 0.11)).to_i
@@ -48,12 +48,13 @@ module Zebra
 
         data = []
 
-        (0..image.rows).each do |y|
-          (0..(image_width * 8)).each do
-            byte = 0
-            x = 0
+        (0...image_length).each do |y|
+          x = 0
 
-            (0..7).each do |bit|
+          (0...(image_width * 8)).each_slice(8) do |bits|
+            byte = 0
+
+            bits.size.times do |bit|
               dot = false
 
               if (x < image.columns)
@@ -70,7 +71,7 @@ module Zebra
           end
         end
 
-        data.pack('c*')
+        data.pack('C*')
       end
 
       def check_attributes

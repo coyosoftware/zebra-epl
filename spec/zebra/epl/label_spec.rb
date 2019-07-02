@@ -79,7 +79,7 @@ describe Zebra::Epl::Label do
       label.print_density  = 10
       label.print_method   = "disable"
       label.dump_contents(io)
-      io.should == "O\nQ200,24\nq100\nS3\nD10\n\nN\nfoobar\nblabla\nP1\n"
+      io.should == "O\r\nQ200,24\r\nq100\r\nS3\r\nD10\r\n\r\nN\r\nfoobar\r\nblabla\r\nP1\r\n\r\n"
     end
 
     it "does not try to set the label width when it's not informed (falls back to autosense)" do
