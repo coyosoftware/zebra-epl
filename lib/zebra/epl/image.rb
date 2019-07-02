@@ -26,22 +26,27 @@ module Zebra
         image.rows
       end
 
-      def image_data
-        dots = Array.new(image.columns * image.rows)
+      def image_dots
+        Array.new(image.columns * image.rows).tap do |dots|
+          index = 0
 
-        index = 0
-        (0..image.rows).each do |y|
-          (0..image.columns).each do |x|
-            pixel = image.pixel_color(x, y)
+          (0..image.rows).each do |y|
+            (0..image.columns).each do |x|
+              pixel = image.pixel_color(x, y)
 
-            luma = (((pixel.red / 256) * 0.3) + ((pixel.green / 256) * 0.59) + ((pixel.blue / 256) * 0.11)).to_i
+              luma = (((pixel.red / 256) * 0.3) + ((pixel.green / 256) * 0.59) + ((pixel.blue / 256) * 0.11)).to_i
 
-            dots[index] = luma < 127
-            index += 1
+              dots[index] = luma < 127
+              index += 1
+            end
           end
         end
+      end
 
-        packed_data = []
+      def image_data
+        dots = image_dots
+
+        data = []
 
         (0..image.rows).each do |y|
           (0..(image_width * 8)).each do
@@ -56,16 +61,16 @@ module Zebra
                 dot = dots[i]
               end
 
-              byte = (dot ? 0 : 1) << (7 - bit)
+              byte += (dot ? 0 : 1) << (7 - bit)
 
               x += 1
             end
 
-            packed_data << byte
+            data << byte
           end
         end
 
-        packed_data.pack('c*')
+        data.pack('c*')
       end
 
       def check_attributes
