@@ -45,23 +45,23 @@ module Zebra
 
         (0..image.rows).each do |y|
           (0..(image_width * 8)).each do
-            s = 0
+            byte = 0
             x = 0
 
-            (0..7).each do |b|
-              v = false
+            (0..7).each do |bit|
+              dot = false
 
               if (x < image.columns)
                 i = (y * image.columns) + x
-                v = dots[i]
+                dot = dots[i]
               end
 
-              s = (v ? 0 : 1) << (7 - b)
+              byte = (dot ? 0 : 1) << (7 - bit)
 
               x += 1
             end
 
-            packed_data << s
+            packed_data << byte
           end
         end
 
