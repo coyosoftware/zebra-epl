@@ -59,8 +59,6 @@ You need to have your printer visible to CUPS. Once your printer is configured a
 	  :type                      => Zebra::Epl::BarcodeType::CODE_128_AUTO
 	)
 	
-	label << barcode
-	
 	print_job = Zebra::PrintJob.new "your-printer-name-on-cups"
 	
 	print_job.print label
@@ -91,11 +89,18 @@ This will persist the label contents to a tempfile (using Ruby's tempfile core l
 	
 ### Available elements
 
+#### Image (only 1 bit PCX files)
+
+You create images elements to print using instances of the `Zebra::Epl::Image` class. It accepts the following options:
+
+* `position`: An array with the coordinates to place the text, in dots.
+* `data`: The path of the image to be printed.
+
 #### Text
 
 You create text elements to print using instances of the `Zebra::Epl::Text` class. It accepts the following options:
 
-* `position`: An array with the coordinates to place the text, in dots. 
+* `position`: An array with the coordinates to place the text, in dots.
 * `rotation`: The rotation for the text. More about the possible values below.
 * `data`: The text to be printed.
 * `v_multiplier`: The vertical multiplier to use. 
@@ -113,7 +118,7 @@ For the print modes, you can also use the constants:
 
 You create barcode elements to print using instances of the `Zebra::Epl::Barcode` class. It accepts the following options:
 
-* `position`: An array with the coordinates to place the text, in dots. 
+* `position`: An array with the coordinates to place the text, in dots.
 * `height`: The barcode's height, in dots.
 * `rotation`: The rotation for the text. More about the possible values below.
 * `data`: The text to be printed.

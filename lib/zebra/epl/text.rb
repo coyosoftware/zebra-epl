@@ -5,7 +5,7 @@ module Zebra
     class Text
       include Printable
 
-      attr_reader   :font
+      attr_reader :font
 
       def font=(f)
         Font.validate_font f

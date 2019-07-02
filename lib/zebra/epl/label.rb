@@ -6,10 +6,11 @@ module Zebra
       class InvalidPrintSpeedError     < StandardError; end
       class InvalidPrintDensityError   < StandardError; end
       class PrintSpeedNotInformedError < StandardError; end
+      class PrintMethodNotInformedError < StandardError; end
 
       attr_writer :copies
       attr_reader :elements, :tempfile
-      attr_accessor :width, :length, :gap, :print_speed, :print_density
+      attr_accessor :width, :length, :gap, :print_speed, :print_density, :print_method
 
       def initialize(options = {})
         options.each_pair { |key, value| self.__send__("#{key}=", value) if self.respond_to?("#{key}=") }
@@ -31,6 +32,16 @@ module Zebra
         @print_density = d
       end
 
+      def print_method=(m)
+        if m == "direct_thermal"
+          @print_method = "OD"
+        elsif m == "thermal_transfer"
+          @print_method = "Od"
+        else
+          @print_method = "O"
+        end
+      end
+
       def copies
         @copies || 1
       end
@@ -42,7 +53,7 @@ module Zebra
       def dump_contents(io = STDOUT)
         check_required_configurations
         # Start options
-        io << "O\n"
+        io << "#{print_method}\n"
         # Q<label height in dots>,<space between labels in dots>
         io << "Q#{length},#{gap}\n" if length && gap
         # q<label width in dots>
@@ -80,6 +91,7 @@ module Zebra
 
       def check_required_configurations
         raise PrintSpeedNotInformedError unless print_speed
+        raise PrintMethodNotInformedError unless print_method
       end
     end
   end

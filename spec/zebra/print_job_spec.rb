@@ -16,9 +16,9 @@ describe Zebra::PrintJob do
   end
 
   describe "#print" do
-    let(:label) { stub :persist => tempfile }
-    let(:cups_job) { stub :print => true }
-    let(:tempfile) { stub(:path => "/foo/bar").as_null_object }
+    let(:label) { stub persist: tempfile }
+    let(:cups_job) { stub print: true }
+    let(:tempfile) { stub(path: "/foo/bar").as_null_object }
 
     subject(:print_job) { described_class.new "Zebra" }
 
