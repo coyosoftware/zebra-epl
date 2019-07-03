@@ -1,7 +1,6 @@
 require "zebra/epl/printable"
 require 'rmagick'
 
-require 'byebug'
 module Zebra
   module Epl
     class Image
