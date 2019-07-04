@@ -69,7 +69,7 @@ module Zebra
         io << "N\r\n"
 
         elements.each do |element|
-          io << element.to_epl << "\r\n"
+          io << element.to_epl.force_encoding("utf-8") << "\r\n"
         end
 
         io << "P#{copies}\r\n\r\n"
